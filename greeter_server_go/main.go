@@ -26,7 +26,7 @@ import (
 	"net"
 	"time"
 
-	pb "helloworld/helloworld"
+	pb "bomei/comtrade-gopy/helloworld"
 
 	"google.golang.org/grpc"
 )
@@ -48,7 +48,7 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
-func (s *server) FastLoad(ctx context.Context, in *pb.HelloRequest) (*pb.Analog, error) {
+func (s *server) TestFastLoad(ctx context.Context, in *pb.HelloRequest) (*pb.Analog, error) {
 	log.Printf("Received: %v", in.GetName())
 	fmt.Println("hello, world.")
 	fmt.Println(time.Now())
@@ -60,7 +60,50 @@ func (s *server) FastLoad(ctx context.Context, in *pb.HelloRequest) (*pb.Analog,
 		ac.Channel = append(ac.Channel, &ch)
 	}
 	return &ac,nil
+}
 
+func (s *server) FastLoad(ctx context.Context,in *pb.DatParseParam) (*pb.WaveDataReply, error){
+	log.Printf("Received: %v",in.GetDatFile())
+	wave := pb.WaveDataReply{}
+	datFile := in.GetDatFile()
+	timeMult := in.GetTimeMult()
+	timeBase := in.GetTimeBase()
+	aChannels:=in.GetAchannels()
+	sChannels := in.GetSchannels()
+
+	a:=in.GetA()
+	b:=in.GetB()
+	groupsOf16bits := in.GetGroupsOf16Bits()
+	totalSamples := in.GetTotalSample()
+
+	timestampCritical := in.GetTimestampCritical()
+	sampleRate := in.GetSampleRate()
+	cfgSampleRate := [][]int32{}
+	for i := range sampleRate{
+		rate := sampleRate[i].GetSampleRateRow()
+		cfgSampleRate = append(cfgSampleRate, rate)
+	}
+
+	log.Printf(datFile,timeMult,timeBase,aChannels,sChannels,a,b,groupsOf16bits,totalSamples,timestampCritical,cfgSampleRate)
+
+	// analog, status, t := Parse(datFile,timeMult,timeBase,aChannels,sChannels,a,b,groupsOf16bits,
+	// 	totalSamples,timestampCritical,cfgSampleRate)	
+	// ac := pb.Analog{}
+	// sc := pb.Status{}
+	// tc := pb.Time{Value:t}
+	// for i :=range analog{
+	// 	ch :=pb.AnalogChannel{Value: analog[i]}
+	// 	ac.Channel = append(ac.Channel, &ch)
+
+	// 	sch := pb.StatusChannel{Value: status[i]}
+	// 	sc.Channel = append(sc.Channel, &sch)
+	// }
+
+	// wave = pb.WaveDataReply{Analog: &ac,Status: &sc,T:&tc}
+
+	
+
+	return &wave,nil
 }
 
 func main() {

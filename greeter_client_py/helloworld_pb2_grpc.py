@@ -22,6 +22,11 @@ class GreeterStub(object):
                 )
         self.FastLoad = channel.unary_unary(
                 '/helloworld.Greeter/FastLoad',
+                request_serializer=helloworld__pb2.DatParseParam.SerializeToString,
+                response_deserializer=helloworld__pb2.WaveDataReply.FromString,
+                )
+        self.TestFastLoad = channel.unary_unary(
+                '/helloworld.Greeter/TestFastLoad',
                 request_serializer=helloworld__pb2.HelloRequest.SerializeToString,
                 response_deserializer=helloworld__pb2.Analog.FromString,
                 )
@@ -44,6 +49,12 @@ class GreeterServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def TestFastLoad(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_GreeterServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -54,6 +65,11 @@ def add_GreeterServicer_to_server(servicer, server):
             ),
             'FastLoad': grpc.unary_unary_rpc_method_handler(
                     servicer.FastLoad,
+                    request_deserializer=helloworld__pb2.DatParseParam.FromString,
+                    response_serializer=helloworld__pb2.WaveDataReply.SerializeToString,
+            ),
+            'TestFastLoad': grpc.unary_unary_rpc_method_handler(
+                    servicer.TestFastLoad,
                     request_deserializer=helloworld__pb2.HelloRequest.FromString,
                     response_serializer=helloworld__pb2.Analog.SerializeToString,
             ),
@@ -97,6 +113,23 @@ class Greeter(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/helloworld.Greeter/FastLoad',
+            helloworld__pb2.DatParseParam.SerializeToString,
+            helloworld__pb2.WaveDataReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def TestFastLoad(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/helloworld.Greeter/TestFastLoad',
             helloworld__pb2.HelloRequest.SerializeToString,
             helloworld__pb2.Analog.FromString,
             options, channel_credentials,

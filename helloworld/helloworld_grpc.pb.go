@@ -20,7 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 type GreeterClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
-	FastLoad(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*Analog, error)
+	FastLoad(ctx context.Context, in *DatParseParam, opts ...grpc.CallOption) (*WaveDataReply, error)
+	TestFastLoad(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*Analog, error)
 }
 
 type greeterClient struct {
@@ -40,9 +41,18 @@ func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...
 	return out, nil
 }
 
-func (c *greeterClient) FastLoad(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*Analog, error) {
-	out := new(Analog)
+func (c *greeterClient) FastLoad(ctx context.Context, in *DatParseParam, opts ...grpc.CallOption) (*WaveDataReply, error) {
+	out := new(WaveDataReply)
 	err := c.cc.Invoke(ctx, "/helloworld.Greeter/FastLoad", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *greeterClient) TestFastLoad(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*Analog, error) {
+	out := new(Analog)
+	err := c.cc.Invoke(ctx, "/helloworld.Greeter/TestFastLoad", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +65,8 @@ func (c *greeterClient) FastLoad(ctx context.Context, in *HelloRequest, opts ...
 type GreeterServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
-	FastLoad(context.Context, *HelloRequest) (*Analog, error)
+	FastLoad(context.Context, *DatParseParam) (*WaveDataReply, error)
+	TestFastLoad(context.Context, *HelloRequest) (*Analog, error)
 	mustEmbedUnimplementedGreeterServer()
 }
 
@@ -66,8 +77,11 @@ type UnimplementedGreeterServer struct {
 func (UnimplementedGreeterServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
-func (UnimplementedGreeterServer) FastLoad(context.Context, *HelloRequest) (*Analog, error) {
+func (UnimplementedGreeterServer) FastLoad(context.Context, *DatParseParam) (*WaveDataReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FastLoad not implemented")
+}
+func (UnimplementedGreeterServer) TestFastLoad(context.Context, *HelloRequest) (*Analog, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestFastLoad not implemented")
 }
 func (UnimplementedGreeterServer) mustEmbedUnimplementedGreeterServer() {}
 
@@ -101,7 +115,7 @@ func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _Greeter_FastLoad_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
+	in := new(DatParseParam)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -113,7 +127,25 @@ func _Greeter_FastLoad_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/helloworld.Greeter/FastLoad",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).FastLoad(ctx, req.(*HelloRequest))
+		return srv.(GreeterServer).FastLoad(ctx, req.(*DatParseParam))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Greeter_TestFastLoad_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GreeterServer).TestFastLoad(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/helloworld.Greeter/TestFastLoad",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GreeterServer).TestFastLoad(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,6 +164,10 @@ var Greeter_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FastLoad",
 			Handler:    _Greeter_FastLoad_Handler,
+		},
+		{
+			MethodName: "TestFastLoad",
+			Handler:    _Greeter_TestFastLoad_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

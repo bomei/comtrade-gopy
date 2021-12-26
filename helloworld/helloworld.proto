@@ -25,7 +25,8 @@ package helloworld;
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
-  rpc FastLoad (HelloRequest) returns (Analog){}
+  rpc FastLoad (DatParseParam) returns (WaveDataReply){}
+  rpc TestFastLoad (HelloRequest) returns (Analog){}
 }
 
 // The request message containing the user's name.
@@ -44,6 +45,24 @@ message AnalogChannel{
 
 message Analog{
   repeated AnalogChannel channel = 1;
+}
+
+message StatusChannel{
+  repeated int32 value=1;
+}
+
+message Status{
+  repeated StatusChannel channel=1;
+}
+
+message Time{
+  repeated double value=1;
+}
+
+message WaveDataReply{
+  Analog analog=1;
+  Status status=2;
+  Time t = 3;
 }
 
 message SampleRateRow{

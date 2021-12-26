@@ -32,16 +32,18 @@ def run() -> None:
         response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
         print("Greeter client received: " + response.message)
         print(arrow.now())
-        response = stub.FastLoad(helloworld_pb2.HelloRequest(name="fast"))
+        response = stub.TestFastLoad(helloworld_pb2.HelloRequest(name="fast"))
         a=[]
         for ch in response.channel:
             b=[]
             for i in ch.value:
                 b.append(i)
             a.append(b)
-        print(a[0][0])
-        print(arrow.now())
-        print(a[0])
+        # print(a[0][0])
+        # print(arrow.now())
+        # print(a[0])
+
+        response = stub.FastLoad(helloworld_pb2.DatParseParam(datFile=''))
 
 
 if __name__ == '__main__':
