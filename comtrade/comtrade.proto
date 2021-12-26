@@ -14,12 +14,12 @@
 
 syntax = "proto3";
 
-option go_package = "google.golang.org/grpc/examples/helloworld/helloworld";
+option go_package = "comtrade-gprc/comtrade";
 option java_multiple_files = true;
-option java_package = "io.grpc.examples.helloworld";
-option java_outer_classname = "HelloWorldProto";
+option java_package = "io.grpc.examples.comtradegrpc";
+option java_outer_classname = "ComtradeGRPCProto";
 
-package helloworld;
+package comtrade;
 
 // The greeting service definition.
 service Greeter {

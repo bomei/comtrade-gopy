@@ -17,27 +17,28 @@ import asyncio
 import logging
 
 import grpc
-import helloworld_pb2
-import helloworld_pb2_grpc
+import comtrade_pb2
+import comtrade_pb2_grpc
 import arrow
-from comtrade_grpc import Comtrade,Cfg
+import comtrade_grpc
 import os
 
 CHANNEL_OPINIONS=[
     ('grpc.max_receive_message_length',999999999)
 ]
 
+base_dir = os.path.split(os.path.abspath(__file__))[0]  
 
-cfg_file = r'C:\tools\Go\src\bomei\comtrade-gopy\greeter_client_py\38957.cfg_utf8.cfg'
-dat_file = r'C:\tools\Go\src\bomei\comtrade-gopy\greeter_client_py\38957.dat'
+cfg_file = f'{base_dir}/38957.cfg_utf8.cfg'
+dat_file = f'{base_dir}/38957.dat'
 
 def run() -> None:
     with grpc.insecure_channel('localhost:50051',options=CHANNEL_OPINIONS) as channel:
-        stub = helloworld_pb2_grpc.GreeterStub(channel)
-        response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
+        stub = comtrade_pb2_grpc.GreeterStub(channel)
+        response = stub.SayHello(comtrade_pb2.HelloRequest(name='you'))
         print("Greeter client received: " + response.message)
         print(arrow.now())
-        response = stub.TestFastLoad(helloworld_pb2.HelloRequest(name="fast"))
+        response = stub.TestFastLoad(comtrade_pb2.HelloRequest(name="fast"))
         a=[]
         for ch in response.channel:
             b=[]
@@ -50,11 +51,18 @@ def run() -> None:
 
 def run_load()->None:
     print(arrow.now())
-    rec = Comtrade(grpc_endpoint='localhost:50051')
+    a=arrow.now()
+    print('0ms')
+    print("rec = comtrade_grpc.Comtrade(grpc_endpoint='localhost:50051')\nrec.load(cfg_file,dat_file)")
+    rec = comtrade_grpc.Comtrade(grpc_endpoint='localhost:50051')
     rec.load(cfg_file,dat_file)
-    print(arrow.now())
-    print(rec.analog[0])
-
+    b=arrow.now()
+    print(f'{(b-a).total_seconds()*1000}ms')
+    print("rec = comtrade_grpc.Comtrade()\nrec.load(cfg_file,dat_file)")
+    rec = comtrade_grpc.Comtrade()
+    rec.load(cfg_file,dat_file)
+    c=arrow.now()
+    print(f'{(c-a).total_seconds()*1000}ms')
 
 
 if __name__ == '__main__':

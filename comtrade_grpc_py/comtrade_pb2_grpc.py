@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import helloworld_pb2 as helloworld__pb2
+import comtrade_pb2 as comtrade__pb2
 
 
 class GreeterStub(object):
@@ -16,19 +16,19 @@ class GreeterStub(object):
             channel: A grpc.Channel.
         """
         self.SayHello = channel.unary_unary(
-                '/helloworld.Greeter/SayHello',
-                request_serializer=helloworld__pb2.HelloRequest.SerializeToString,
-                response_deserializer=helloworld__pb2.HelloReply.FromString,
+                '/comtrade.Greeter/SayHello',
+                request_serializer=comtrade__pb2.HelloRequest.SerializeToString,
+                response_deserializer=comtrade__pb2.HelloReply.FromString,
                 )
         self.FastLoad = channel.unary_unary(
-                '/helloworld.Greeter/FastLoad',
-                request_serializer=helloworld__pb2.DatParseParam.SerializeToString,
-                response_deserializer=helloworld__pb2.WaveDataReply.FromString,
+                '/comtrade.Greeter/FastLoad',
+                request_serializer=comtrade__pb2.DatParseParam.SerializeToString,
+                response_deserializer=comtrade__pb2.WaveDataReply.FromString,
                 )
         self.TestFastLoad = channel.unary_unary(
-                '/helloworld.Greeter/TestFastLoad',
-                request_serializer=helloworld__pb2.HelloRequest.SerializeToString,
-                response_deserializer=helloworld__pb2.Analog.FromString,
+                '/comtrade.Greeter/TestFastLoad',
+                request_serializer=comtrade__pb2.HelloRequest.SerializeToString,
+                response_deserializer=comtrade__pb2.Analog.FromString,
                 )
 
 
@@ -60,22 +60,22 @@ def add_GreeterServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SayHello': grpc.unary_unary_rpc_method_handler(
                     servicer.SayHello,
-                    request_deserializer=helloworld__pb2.HelloRequest.FromString,
-                    response_serializer=helloworld__pb2.HelloReply.SerializeToString,
+                    request_deserializer=comtrade__pb2.HelloRequest.FromString,
+                    response_serializer=comtrade__pb2.HelloReply.SerializeToString,
             ),
             'FastLoad': grpc.unary_unary_rpc_method_handler(
                     servicer.FastLoad,
-                    request_deserializer=helloworld__pb2.DatParseParam.FromString,
-                    response_serializer=helloworld__pb2.WaveDataReply.SerializeToString,
+                    request_deserializer=comtrade__pb2.DatParseParam.FromString,
+                    response_serializer=comtrade__pb2.WaveDataReply.SerializeToString,
             ),
             'TestFastLoad': grpc.unary_unary_rpc_method_handler(
                     servicer.TestFastLoad,
-                    request_deserializer=helloworld__pb2.HelloRequest.FromString,
-                    response_serializer=helloworld__pb2.Analog.SerializeToString,
+                    request_deserializer=comtrade__pb2.HelloRequest.FromString,
+                    response_serializer=comtrade__pb2.Analog.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'helloworld.Greeter', rpc_method_handlers)
+            'comtrade.Greeter', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -95,9 +95,9 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/helloworld.Greeter/SayHello',
-            helloworld__pb2.HelloRequest.SerializeToString,
-            helloworld__pb2.HelloReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/comtrade.Greeter/SayHello',
+            comtrade__pb2.HelloRequest.SerializeToString,
+            comtrade__pb2.HelloReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -112,9 +112,9 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/helloworld.Greeter/FastLoad',
-            helloworld__pb2.DatParseParam.SerializeToString,
-            helloworld__pb2.WaveDataReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/comtrade.Greeter/FastLoad',
+            comtrade__pb2.DatParseParam.SerializeToString,
+            comtrade__pb2.WaveDataReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -129,8 +129,8 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/helloworld.Greeter/TestFastLoad',
-            helloworld__pb2.HelloRequest.SerializeToString,
-            helloworld__pb2.Analog.FromString,
+        return grpc.experimental.unary_unary(request, target, '/comtrade.Greeter/TestFastLoad',
+            comtrade__pb2.HelloRequest.SerializeToString,
+            comtrade__pb2.Analog.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

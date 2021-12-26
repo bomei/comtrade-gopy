@@ -11,14 +11,13 @@ RUN apt update;\
     ln -s /usr/local/bin/python3.9 /usr/local/bin/python3;\
     ln -s /usr/local/bin/pip3.9 /usr/local/bin/pip3;
 
-COPY ../helloworld /usr/local/go/src
+COPY ../comtrade-gopy /usr/local/go/src
 
 WORKDIR /usr/local/go/src/greeter_client_py
 
 RUN pip3 install -r requirements.txt
 
 WORKDIR /usr/local/go/src/greeter_client_go
-
 
 RUN go mod tidy
 

@@ -32,8 +32,8 @@ import struct
 import sys
 import warnings
 import grpc
-import helloworld_pb2
-import helloworld_pb2_grpc
+import comtrade_pb2
+import comtrade_pb2_grpc
 
 # COMTRADE standard revisions
 REV_1991 = "1991"
@@ -1130,19 +1130,18 @@ class BinaryDatReader(DatReader):
         groups_of_16bits = math.floor(dbytes / self.STATUS_BYTES)
 
         if self.grpc_endpoint is not None:
-            # TODO: Replace with grpc
             CHANNEL_OPINIONS=[
                 ('grpc.max_receive_message_length',999999999)
             ]
 
             sample_rate_grpc = []
             for each in self._cfg.sample_rates:
-                sr = helloworld_pb2.SampleRateRow(sampleRateRow=[int(e) for e in each])
+                sr = comtrade_pb2.SampleRateRow(sampleRateRow=[int(e) for e in each])
                 sample_rate_grpc.append(sr)
 
             with grpc.insecure_channel(self.grpc_endpoint,options=CHANNEL_OPINIONS) as channel:
-                stub = helloworld_pb2_grpc.GreeterStub(channel)
-                response = stub.FastLoad(helloworld_pb2.DatParseParam(
+                stub = comtrade_pb2_grpc.GreeterStub(channel)
+                response = stub.FastLoad(comtrade_pb2.DatParseParam(
                         datFile=self.file_path,
                         timeMult = int(time_mult),
                         timeBase=time_base,

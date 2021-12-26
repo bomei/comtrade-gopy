@@ -26,7 +26,7 @@ import (
 	"net"
 	"time"
 
-	pb "bomei/comtrade-gopy/helloworld"
+	pb "bomei/comtrade-gopy/comtrade"
 
 	"google.golang.org/grpc"
 )

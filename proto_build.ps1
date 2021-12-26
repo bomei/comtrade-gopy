@@ -1,2 +1,2 @@
-python -m grpc_tools.protoc -I.\helloworld\ --python_out=./greeter_client_py --grpc_python_out=./greeter_client_py .\helloworld\helloworld.proto
-protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative helloworld/helloworld.proto
+python -m grpc_tools.protoc -I.\comtrade\ --python_out=./comtrade_grpc_py --grpc_python_out=./comtrade_grpc_py .\comtrade\comtrade.proto
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative comtrade/comtrade.proto
