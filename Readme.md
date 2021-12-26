@@ -38,9 +38,11 @@ rec.load(cfg_file,dat_file)
 ### 2. Start grpc server
 
 ```bash
-cd comtrade_grpc_server_go
-go mod tidy
-go run .
+$cd comtrade_grpc_server_go
+$go mod tidy
+$go run .
+
+server listening at [::]:50051
 ```
 
 ### 3. Make a docker image
