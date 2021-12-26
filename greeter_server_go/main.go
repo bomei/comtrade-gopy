@@ -86,20 +86,20 @@ func (s *server) FastLoad(ctx context.Context,in *pb.DatParseParam) (*pb.WaveDat
 
 	log.Printf(datFile,timeMult,timeBase,aChannels,sChannels,a,b,groupsOf16bits,totalSamples,timestampCritical,cfgSampleRate)
 
-	// analog, status, t := Parse(datFile,timeMult,timeBase,aChannels,sChannels,a,b,groupsOf16bits,
-	// 	totalSamples,timestampCritical,cfgSampleRate)	
-	// ac := pb.Analog{}
-	// sc := pb.Status{}
-	// tc := pb.Time{Value:t}
-	// for i :=range analog{
-	// 	ch :=pb.AnalogChannel{Value: analog[i]}
-	// 	ac.Channel = append(ac.Channel, &ch)
+	analog, status, t := Parse(datFile,timeMult,timeBase,aChannels,sChannels,a,b,groupsOf16bits,
+		totalSamples,timestampCritical,cfgSampleRate)	
+	ac := pb.Analog{}
+	sc := pb.Status{}
+	tc := pb.Time{Value:t}
+	for i :=range analog{
+		ch :=pb.AnalogChannel{Value: analog[i]}
+		ac.Channel = append(ac.Channel, &ch)
 
-	// 	sch := pb.StatusChannel{Value: status[i]}
-	// 	sc.Channel = append(sc.Channel, &sch)
-	// }
+		sch := pb.StatusChannel{Value: status[i]}
+		sc.Channel = append(sc.Channel, &sch)
+	}
 
-	// wave = pb.WaveDataReply{Analog: &ac,Status: &sc,T:&tc}
+	wave = pb.WaveDataReply{Analog: &ac,Status: &sc,T:&tc}
 
 	
 

@@ -20,11 +20,16 @@ import grpc
 import helloworld_pb2
 import helloworld_pb2_grpc
 import arrow
+from comtrade_grpc import Comtrade,Cfg
+import os
 
 CHANNEL_OPINIONS=[
     ('grpc.max_receive_message_length',999999999)
 ]
 
+
+cfg_file = r'C:\tools\Go\src\bomei\comtrade-gopy\greeter_client_py\38957.cfg_utf8.cfg'
+dat_file = r'C:\tools\Go\src\bomei\comtrade-gopy\greeter_client_py\38957.dat'
 
 def run() -> None:
     with grpc.insecure_channel('localhost:50051',options=CHANNEL_OPINIONS) as channel:
@@ -40,13 +45,20 @@ def run() -> None:
                 b.append(i)
             a.append(b)
         # print(a[0][0])
-        # print(arrow.now())
+        print(arrow.now())
         # print(a[0])
 
-        response = stub.FastLoad(helloworld_pb2.DatParseParam(datFile=''))
+def run_load()->None:
+    print(arrow.now())
+    rec = Comtrade(grpc_endpoint='localhost:50051')
+    rec.load(cfg_file,dat_file)
+    print(arrow.now())
+    print(rec.analog[0])
+
 
 
 if __name__ == '__main__':
     logging.basicConfig()
     # asyncio.run(run())
     run()
+    run_load()

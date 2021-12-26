@@ -19,15 +19,9 @@ RUN pip3 install -r requirements.txt
 
 WORKDIR /usr/local/go/src/greeter_client_go
 
-ENV HTTP_PROXY="http://192.168.0.135:4080"
-ENV HTTPS_PROXY="http://192.168.0.135:4080"
 
 RUN go mod tidy
 
-ENV HTTP_PROXY=
-ENV HTTPS_PROXY=
-
-RUN nohup go run .
 
 
 
