@@ -17,7 +17,7 @@ rec.load(cfg_file,dat_file)
 
 With `Comtrade-GPRC`, you may write like this:
 ```python
-from comtrade import Comtrade
+from comtrade_grpc import Comtrade
 
 # Passing a grpc_endpoint param will lead to using of parse() func in go with grpc
 
